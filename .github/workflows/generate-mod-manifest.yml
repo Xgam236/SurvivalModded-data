@@ -1,4 +1,4 @@
-name: Generate Mods Manifest
+name: Generate Modpack Manifest
 
 on:
   push:
@@ -6,6 +6,11 @@ on:
       - main
     paths:
       - "mods/**"
+      - "config/**"
+      - "defaultconfigs/**"
+      - "resourcepacks/**"
+      - "shaderpacks/**"
+
   workflow_dispatch:
 
 permissions:
@@ -27,57 +32,152 @@ jobs:
           import hashlib
           import urllib.parse
 
-          MODS_FOLDER = "mods"
           OUTPUT_FILE = "manifest.json"
 
-          repository = os.environ["GITHUB_REPOSITORY"]
-          branch = "main"
+          REPOSITORY = os.environ["GITHUB_REPOSITORY"]
+          BRANCH = "main"
 
-          mods = []
-
-          if os.path.isdir(MODS_FOLDER):
-              for filename in sorted(os.listdir(MODS_FOLDER)):
-                  if not filename.lower().endswith(".jar"):
-                      continue
-
-                  filepath = os.path.join(MODS_FOLDER, filename)
-
-                  if not os.path.isfile(filepath):
-                      continue
-
-                  sha256 = hashlib.sha256()
-
-                  with open(filepath, "rb") as f:
-                      while True:
-                          chunk = f.read(1024 * 1024)
-
-                          if not chunk:
-                              break
-
-                          sha256.update(chunk)
-
-                  encoded_filename = urllib.parse.quote(filename)
-
-                  url = (
-                      f"https://raw.githubusercontent.com/"
-                      f"{repository}/{branch}/mods/{encoded_filename}"
-                  )
-
-                  mods.append({
-                      "name": filename,
-                      "sha256": sha256.hexdigest(),
-                      "url": url
-                  })
-
-          manifest = {
-              "version": 1,
-              "mods": mods
+          FOLDERS = {
+              "mods": {
+                  "extensions": [".jar"]
+              },
+              "config": {
+                  "extensions": None
+              },
+              "defaultconfigs": {
+                  "extensions": None
+              },
+              "resourcepacks": {
+                  "extensions": None
+              },
+              "shaderpacks": {
+                  "extensions": None
+              }
           }
 
-          with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-              json.dump(manifest, f, indent=2, ensure_ascii=False)
 
-          print(f"{len(mods)} mods ajoutés au manifest.")
+          def calculate_sha256(filepath):
+              sha256 = hashlib.sha256()
+
+              with open(filepath, "rb") as f:
+                  while True:
+                      chunk = f.read(1024 * 1024)
+
+                      if not chunk:
+                          break
+
+                      sha256.update(chunk)
+
+              return sha256.hexdigest()
+
+
+          def build_download_url(relative_path):
+              parts = relative_path.replace("\\", "/").split("/")
+
+              encoded_path = "/".join(
+                  urllib.parse.quote(part)
+                  for part in parts
+              )
+
+              return (
+                  f"https://raw.githubusercontent.com/"
+                  f"{REPOSITORY}/{BRANCH}/{encoded_path}"
+              )
+
+
+          def scan_folder(folder_name, extensions=None):
+              files = []
+
+              if not os.path.isdir(folder_name):
+                  return files
+
+              for root, dirs, filenames in os.walk(folder_name):
+                  dirs.sort()
+                  filenames.sort()
+
+                  for filename in filenames:
+
+                      if filename == ".gitkeep":
+                          continue
+
+                      if extensions is not None:
+                          if not any(
+                              filename.lower().endswith(ext.lower())
+                              for ext in extensions
+                          ):
+                              continue
+
+                      filepath = os.path.join(root, filename)
+
+                      relative_from_repo = filepath.replace("\\", "/")
+
+                      relative_inside_folder = os.path.relpath(
+                          filepath,
+                          folder_name
+                      ).replace("\\", "/")
+
+                      sha256 = calculate_sha256(filepath)
+
+                      url = build_download_url(
+                          relative_from_repo
+                      )
+
+                      files.append({
+                          "name": filename,
+                          "path": relative_inside_folder,
+                          "sha256": sha256,
+                          "url": url
+                      })
+
+              files.sort(
+                  key=lambda entry: entry["path"].lower()
+              )
+
+              return files
+
+
+          manifest = {
+              "version": 2
+          }
+
+
+          total_files = 0
+
+          for folder_name, config in FOLDERS.items():
+
+              files = scan_folder(
+                  folder_name,
+                  config["extensions"]
+              )
+
+              manifest[folder_name] = files
+
+              total_files += len(files)
+
+              print(
+                  f"{folder_name}: "
+                  f"{len(files)} fichier(s)"
+              )
+
+
+          with open(
+              OUTPUT_FILE,
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  manifest,
+                  f,
+                  indent=2,
+                  ensure_ascii=False
+              )
+
+
+          print(
+              f"Manifest généré : "
+              f"{total_files} fichier(s) au total."
+          )
 
       - name: Commit manifest.json
         run: |
@@ -91,5 +191,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update mods manifest"
+          git commit -m "Update modpack manifest"
           git push
