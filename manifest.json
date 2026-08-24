@@ -2,16 +2,574 @@
   "version": 2,
   "mods": [
     {
+      "name": "Aquaculture-1.18.2-2.3.12.jar",
+      "path": "Aquaculture-1.18.2-2.3.12.jar",
+      "sha256": "b40aa5ad7895b9d463f6dbad0980f7b0c0ecc51fb25bcfca456a35353feb4e21",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Aquaculture-1.18.2-2.3.12.jar"
+    },
+    {
+      "name": "AutoRegLib-1.7-53.jar",
+      "path": "AutoRegLib-1.7-53.jar",
+      "sha256": "41ece668218c074bf2f30be5883cd90ad1a48dad6537a7fefca720230f688140",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/AutoRegLib-1.7-53.jar"
+    },
+    {
+      "name": "BiomesOPlenty-1.18.2-16.0.0.109-universal.jar",
+      "path": "BiomesOPlenty-1.18.2-16.0.0.109-universal.jar",
+      "sha256": "2866100747e18412f9cb73861c68568d2b96bd681374b30df5ba5dd5bfc6045c",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/BiomesOPlenty-1.18.2-16.0.0.109-universal.jar"
+    },
+    {
+      "name": "Bookshelf-Forge-1.18.2-13.3.56.jar",
+      "path": "Bookshelf-Forge-1.18.2-13.3.56.jar",
+      "sha256": "f9af6c0177c0de060047a00435ca6f1057f694b3c5e3fe0cd0738aef4146c18f",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Bookshelf-Forge-1.18.2-13.3.56.jar"
+    },
+    {
+      "name": "Botania-1.18.2-435.jar",
+      "path": "Botania-1.18.2-435.jar",
+      "sha256": "1300bc74d0cc1fad40261b0a888fc3c8b88594c43b9063b5f6a6b7456518ed1f",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Botania-1.18.2-435.jar"
+    },
+    {
+      "name": "BrandonsCore-1.18.2-3.1.10.283-universal.jar",
+      "path": "BrandonsCore-1.18.2-3.1.10.283-universal.jar",
+      "sha256": "c91de933f4a4dc82cf6e1b9d6c34b02b50f809e2e3ce93dbc6f551d310008ad9",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/BrandonsCore-1.18.2-3.1.10.283-universal.jar"
+    },
+    {
+      "name": "Clumps-forge-1.18.2-8.0.0+17.jar",
+      "path": "Clumps-forge-1.18.2-8.0.0+17.jar",
+      "sha256": "8e5586c4f85f7dafab0942933de124e232f5368d2745bf2d17bc06b5054654fa",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Clumps-forge-1.18.2-8.0.0%2B17.jar"
+    },
+    {
+      "name": "CodeChickenLib-1.18.2-4.1.4.488-universal.jar",
+      "path": "CodeChickenLib-1.18.2-4.1.4.488-universal.jar",
+      "sha256": "cb9655514fe7a1abc31a4eee6a0e8d4e8dde4be4ee63314a37c2476711799c25",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/CodeChickenLib-1.18.2-4.1.4.488-universal.jar"
+    },
+    {
+      "name": "CraftTweaker-forge-1.18.2-9.1.213.jar",
+      "path": "CraftTweaker-forge-1.18.2-9.1.213.jar",
+      "sha256": "d27b4739f7b4da0fe92141000e4cfc5bef617202de6eb9bb4bb2147e9e1e9c6e",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/CraftTweaker-forge-1.18.2-9.1.213.jar"
+    },
+    {
+      "name": "Draconic-Additions-1.18.2-2.2.7.10-universal.jar",
+      "path": "Draconic-Additions-1.18.2-2.2.7.10-universal.jar",
+      "sha256": "0d3245a6dc6cfc61914baea2e5fcc64b1976059ca7ddb29e754dd782e694fc2a",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Draconic-Additions-1.18.2-2.2.7.10-universal.jar"
+    },
+    {
+      "name": "Draconic-Evolution-1.18.2-3.0.31.531-universal.jar",
+      "path": "Draconic-Evolution-1.18.2-3.0.31.531-universal.jar",
+      "sha256": "d3dc6c7539dc30c52369cf4f693e62d11bdf59931829be4fe745a8a1e0337b26",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Draconic-Evolution-1.18.2-3.0.31.531-universal.jar"
+    },
+    {
+      "name": "FallingTree-1.18.2-3.5.5.jar",
+      "path": "FallingTree-1.18.2-3.5.5.jar",
+      "sha256": "46da3e92d18bb31bdcb2d13090f965e0e6aacfe9b43112d83656f0d9eb4a1edb",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/FallingTree-1.18.2-3.5.5.jar"
+    },
+    {
+      "name": "FarmersDelight-1.18.2-1.2.3.jar",
+      "path": "FarmersDelight-1.18.2-1.2.3.jar",
+      "sha256": "b192b64908d4fd963151b79329d6f0c5d5d1a1273f7e82849b3c08b720311028",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/FarmersDelight-1.18.2-1.2.3.jar"
+    },
+    {
+      "name": "FastFurnace-1.18.2-6.0.3.jar",
+      "path": "FastFurnace-1.18.2-6.0.3.jar",
+      "sha256": "b7f23cb2bc8c4f0f52a387aaf17b6d58c644b0d6a8c19b08475a914e7fc9a7a3",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/FastFurnace-1.18.2-6.0.3.jar"
+    },
+    {
+      "name": "JEITweaker-1.18.2-3.0.0.9.jar",
+      "path": "JEITweaker-1.18.2-3.0.0.9.jar",
+      "sha256": "00bebcdf16c086504ce70422b066ae307083960313bbdb1d845d936281cebb7d",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/JEITweaker-1.18.2-3.0.0.9.jar"
+    },
+    {
+      "name": "Jade-1.18.2-forge-5.3.2.jar",
+      "path": "Jade-1.18.2-forge-5.3.2.jar",
+      "sha256": "de002f776a3b5b0716c702233798a5f03867deba598c6b76c6ed77a3ec10bdce",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Jade-1.18.2-forge-5.3.2.jar"
+    },
+    {
+      "name": "Kiwi-1.18.2-forge-6.1.4.jar",
+      "path": "Kiwi-1.18.2-forge-6.1.4.jar",
+      "sha256": "6032f43f6fc96ec3005e72da055d4804461bc4d244ccc3ad66daed569db2cc2c",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Kiwi-1.18.2-forge-6.1.4.jar"
+    },
+    {
+      "name": "Mekanism-1.18.2-10.2.5.465.jar",
+      "path": "Mekanism-1.18.2-10.2.5.465.jar",
+      "sha256": "ae5f3818940aa99cf3bf51786a9b66284327d14120924bd99f864e6b5457e523",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Mekanism-1.18.2-10.2.5.465.jar"
+    },
+    {
+      "name": "MekanismAdditions-1.18.2-10.2.5.465.jar",
+      "path": "MekanismAdditions-1.18.2-10.2.5.465.jar",
+      "sha256": "ff1d4041a394f8c7eac30784cf9aedef27bab19b0e3ff124ee232a78903fe597",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/MekanismAdditions-1.18.2-10.2.5.465.jar"
+    },
+    {
+      "name": "MekanismGenerators-1.18.2-10.2.5.465.jar",
+      "path": "MekanismGenerators-1.18.2-10.2.5.465.jar",
+      "sha256": "a981e77d4825111d15b529400eac3c21f43b3a47ea12d82475a66cf919e52aa0",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/MekanismGenerators-1.18.2-10.2.5.465.jar"
+    },
+    {
+      "name": "MekanismTools-1.18.2-10.2.5.465.jar",
+      "path": "MekanismTools-1.18.2-10.2.5.465.jar",
+      "sha256": "ff30c55f2b89b558c3b3a9db2ff6bd84afa02a887389b250dcebd0d5c88c1306",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/MekanismTools-1.18.2-10.2.5.465.jar"
+    },
+    {
+      "name": "NaturesCompass-1.18.2-1.9.7-forge.jar",
+      "path": "NaturesCompass-1.18.2-1.9.7-forge.jar",
+      "sha256": "f6efa4d29917f5d6acd8bb904aa5393824c0871059fe5dbfe76f6eedb557134f",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/NaturesCompass-1.18.2-1.9.7-forge.jar"
+    },
+    {
+      "name": "Patchouli-1.18.2-71.1.jar",
+      "path": "Patchouli-1.18.2-71.1.jar",
+      "sha256": "1bcd352f81124b24832b536b62c138663682527886d4aaced595e7baa50e3ebb",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Patchouli-1.18.2-71.1.jar"
+    },
+    {
+      "name": "Placebo-1.18.2-6.6.7.jar",
+      "path": "Placebo-1.18.2-6.6.7.jar",
+      "sha256": "3ad270729e720fa745f0a044871fea22fd6853c83346b5685030f90458e4514a",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Placebo-1.18.2-6.6.7.jar"
+    },
+    {
+      "name": "Quark-3.2-358.jar",
+      "path": "Quark-3.2-358.jar",
+      "sha256": "046c5cbc31259eb175d010bac36aa82cf6678254caca79cd65022f5b28e031cd",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Quark-3.2-358.jar"
+    },
+    {
+      "name": "Serene Seasons-1.18.2-7.0.0.13.jar",
+      "path": "Serene Seasons-1.18.2-7.0.0.13.jar",
+      "sha256": "dc3e7b2399065a5fbc67c8042243a1af054ea63fdfd3685344a92f4d7b795c66",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Serene%20Seasons-1.18.2-7.0.0.13.jar"
+    },
+    {
+      "name": "StorageDrawers-1.18.2-10.2.1.jar",
+      "path": "StorageDrawers-1.18.2-10.2.1.jar",
+      "sha256": "5a7bcfe6a289d3857ca4fd2609f7d0ee3e2cca9228dad81d138d0675f80c5c99",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/StorageDrawers-1.18.2-10.2.1.jar"
+    },
+    {
+      "name": "TerraBlender-forge-1.18.2-1.2.0.126.jar",
+      "path": "TerraBlender-forge-1.18.2-1.2.0.126.jar",
+      "sha256": "77efe21003e4968460652dda1454f4777ca0a5c77fe84d698259cf4472dafa04",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/TerraBlender-forge-1.18.2-1.2.0.126.jar"
+    },
+    {
+      "name": "YungsApi-1.18.2-Forge-2.2.9.jar",
+      "path": "YungsApi-1.18.2-Forge-2.2.9.jar",
+      "sha256": "3e280c99a638c9ec8c4fe1cf85aa502d09cea16a01e923134d64ab73a980192c",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsApi-1.18.2-Forge-2.2.9.jar"
+    },
+    {
+      "name": "YungsBetterDesertTemples-1.18.2-Forge-1.3.1.jar",
+      "path": "YungsBetterDesertTemples-1.18.2-Forge-1.3.1.jar",
+      "sha256": "7cdf3f05f1e7e83a88b2badc0ff4a877b2de4b5c3742358a6422a42c0c118aee",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterDesertTemples-1.18.2-Forge-1.3.1.jar"
+    },
+    {
+      "name": "YungsBetterDungeons-1.18.2-Forge-2.1.0.jar",
+      "path": "YungsBetterDungeons-1.18.2-Forge-2.1.0.jar",
+      "sha256": "d58533ee902ee696614e10d83cce0495e02fea9a1303397903b094550ff6b7f6",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterDungeons-1.18.2-Forge-2.1.0.jar"
+    },
+    {
+      "name": "YungsBetterEndIsland-1.18.2-Forge-1.0.jar",
+      "path": "YungsBetterEndIsland-1.18.2-Forge-1.0.jar",
+      "sha256": "e8164af2e4df15e5e992b86255e5ce894d053cefe81e25fa259f34d3b2472817",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterEndIsland-1.18.2-Forge-1.0.jar"
+    },
+    {
+      "name": "YungsBetterMineshafts-1.18.2-Forge-2.2.jar",
+      "path": "YungsBetterMineshafts-1.18.2-Forge-2.2.jar",
+      "sha256": "f96f914fb6ac61a64a7619c49778a3049e8339a87fb94e36ac2ebdc77953674a",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterMineshafts-1.18.2-Forge-2.2.jar"
+    },
+    {
+      "name": "YungsBetterNetherFortresses-1.18.2-Forge-1.0.0.jar",
+      "path": "YungsBetterNetherFortresses-1.18.2-Forge-1.0.0.jar",
+      "sha256": "f6671bf97e8e33b69a0f62b6e8568c94320511613264f14c0dcce33a964d48b8",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterNetherFortresses-1.18.2-Forge-1.0.0.jar"
+    },
+    {
+      "name": "YungsBetterOceanMonuments-1.18.2-Forge-1.0.3.jar",
+      "path": "YungsBetterOceanMonuments-1.18.2-Forge-1.0.3.jar",
+      "sha256": "8a1f29979f5df3b3a022265dcd35c534ebdb4d01c249f312a4deaa3649bdf717",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterOceanMonuments-1.18.2-Forge-1.0.3.jar"
+    },
+    {
+      "name": "YungsBetterStrongholds-1.18.2-Forge-2.1.1.jar",
+      "path": "YungsBetterStrongholds-1.18.2-Forge-2.1.1.jar",
+      "sha256": "7265ab312ec40a87edd3b150169f3a279eaa578b206db5c69bd139c7daa9138e",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterStrongholds-1.18.2-Forge-2.1.1.jar"
+    },
+    {
+      "name": "YungsBetterWitchHuts-1.18.2-Forge-1.0.1.jar",
+      "path": "YungsBetterWitchHuts-1.18.2-Forge-1.0.1.jar",
+      "sha256": "4571cf7ec0cad64bdc834918c2c6913a158b3abfa97187cfdac3ef7c77f4dfdf",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBetterWitchHuts-1.18.2-Forge-1.0.1.jar"
+    },
+    {
+      "name": "YungsBridges-1.18.2-Forge-2.1.0.jar",
+      "path": "YungsBridges-1.18.2-Forge-2.1.0.jar",
+      "sha256": "5d9f3e8511c08a6cedb4e055c407a02b0b0f04b43b86a40d732c2ac064be97c1",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsBridges-1.18.2-Forge-2.1.0.jar"
+    },
+    {
+      "name": "YungsCaveBiomes-1.18.2-Forge-1.1.1.jar",
+      "path": "YungsCaveBiomes-1.18.2-Forge-1.1.1.jar",
+      "sha256": "5e0b8668ce2ed356d7f763eb019b4e50449939eb57add4027f34a9aafa80f721",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsCaveBiomes-1.18.2-Forge-1.1.1.jar"
+    },
+    {
+      "name": "YungsExtras-1.18.2-Forge-2.1.0.jar",
+      "path": "YungsExtras-1.18.2-Forge-2.1.0.jar",
+      "sha256": "7edae2633e5ec1737d3cd6ee842d12398000e9a5a0d754773652df01ea572d20",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/YungsExtras-1.18.2-Forge-2.1.0.jar"
+    },
+    {
+      "name": "[1.18.2] SecurityCraft v1.10.1.jar",
+      "path": "[1.18.2] SecurityCraft v1.10.1.jar",
+      "sha256": "31e805d074faad1b16bdffd2fe47fb900ae87dc76747686084b6e9e7e8378e15",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/%5B1.18.2%5D%20SecurityCraft%20v1.10.1.jar"
+    },
+    {
+      "name": "alexsdelight-1.18.2-1.3.3.jar",
+      "path": "alexsdelight-1.18.2-1.3.3.jar",
+      "sha256": "9656ac014e821f4ec403be92a3fbbdc8d26debadb34f5a388659d89efb0face3",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/alexsdelight-1.18.2-1.3.3.jar"
+    },
+    {
+      "name": "alexsmobs-1.18.6.jar",
+      "path": "alexsmobs-1.18.6.jar",
+      "sha256": "32198d95d5c6caa4346db4f71f6b43a72fb89cd22e1b3df4c745c63e390e4b76",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/alexsmobs-1.18.6.jar"
+    },
+    {
+      "name": "appleskin-forge-mc1.18.2-2.5.1.jar",
+      "path": "appleskin-forge-mc1.18.2-2.5.1.jar",
+      "sha256": "a10e8e746db51b70f4e9f8aa0359ac0663ed2e04d5d30ca54e0d0e01d2c48961",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/appleskin-forge-mc1.18.2-2.5.1.jar"
+    },
+    {
+      "name": "appliedenergistics2-forge-11.7.6.jar",
+      "path": "appliedenergistics2-forge-11.7.6.jar",
+      "sha256": "86f06ffdd7b73848cbb82ff23cf6bba6b2949e0562ae8a5f68bf0eed86eba8d2",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/appliedenergistics2-forge-11.7.6.jar"
+    },
+    {
+      "name": "architectury-4.12.94-forge.jar",
+      "path": "architectury-4.12.94-forge.jar",
+      "sha256": "e5fee3917f1abd665a3a4402358d9e65cd988964c1b099a522baa22056234397",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/architectury-4.12.94-forge.jar"
+    },
+    {
+      "name": "balm-3.2.6.jar",
+      "path": "balm-3.2.6.jar",
+      "sha256": "5e0387007d4f5b5be03eb79f46abdb04a29caac881c8e92bcc4cafbcb1c0a118",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/balm-3.2.6.jar"
+    },
+    {
       "name": "biomemusic-1.18.2-1.7.jar",
       "path": "biomemusic-1.18.2-1.7.jar",
       "sha256": "56edf41de373205da00f576b4cbc1d1548b3061dcc7eaa8b713cf72f55926a60",
       "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/biomemusic-1.18.2-1.7.jar"
     },
     {
+      "name": "caelus-forge-1.18.1-3.0.0.2.jar",
+      "path": "caelus-forge-1.18.1-3.0.0.2.jar",
+      "sha256": "41efaa71d1649ac777eac334419fa4f464570ea47ceb9710f9318cf1e9e2836c",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/caelus-forge-1.18.1-3.0.0.2.jar"
+    },
+    {
+      "name": "cfm-7.0.0-pre35-1.18.2.jar",
+      "path": "cfm-7.0.0-pre35-1.18.2.jar",
+      "sha256": "48d55a12e01d5d2de970b4be4f3eea188202f8a95058c8bb47b50f12d61661b2",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/cfm-7.0.0-pre35-1.18.2.jar"
+    },
+    {
+      "name": "citadel-1.11.3-1.18.2.jar",
+      "path": "citadel-1.11.3-1.18.2.jar",
+      "sha256": "4e4ae44dc790473390a14bc8d098f5a3876f236a2af9f12ab6be8cf2bcb72a7c",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/citadel-1.11.3-1.18.2.jar"
+    },
+    {
+      "name": "cloth-config-6.5.133-forge.jar",
+      "path": "cloth-config-6.5.133-forge.jar",
+      "sha256": "4806e7cff230dc7ccf653be1502a3d8a1fff1f259a07823bfc5ff7a2fbb489dc",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/cloth-config-6.5.133-forge.jar"
+    },
+    {
+      "name": "collective-1.18.2-7.7.jar",
+      "path": "collective-1.18.2-7.7.jar",
+      "sha256": "994753ec9be993bca4ec65342f842d00e4cfa9456875cba31e7b38963aff39aa",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/collective-1.18.2-7.7.jar"
+    },
+    {
+      "name": "comforts-forge-1.18.2-5.0.0.6.jar",
+      "path": "comforts-forge-1.18.2-5.0.0.6.jar",
+      "sha256": "10da8248a7e9440a84394a4b78410ec6ab85d66f521cfc3f87849dfada3a65d7",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/comforts-forge-1.18.2-5.0.0.6.jar"
+    },
+    {
+      "name": "corpse-1.18.2-1.0.1.jar",
+      "path": "corpse-1.18.2-1.0.1.jar",
+      "sha256": "3e3ca61b420f8d1bc986c0dcbf95df2c4c8b03155b003843f4ca98505ec3bc80",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/corpse-1.18.2-1.0.1.jar"
+    },
+    {
+      "name": "craftingtweaks-forge-1.18.2-14.0.9.jar",
+      "path": "craftingtweaks-forge-1.18.2-14.0.9.jar",
+      "sha256": "6964725f575d7f56d9c674bacb8fd8c613662a0f50589c40e6d4865ff1ac81bf",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/craftingtweaks-forge-1.18.2-14.0.9.jar"
+    },
+    {
+      "name": "create-1.18.2-0.5.1.i.jar",
+      "path": "create-1.18.2-0.5.1.i.jar",
+      "sha256": "5311dbc98d734d7cf0f38f3a9a149234136b912228cdf01b746fbe32d41d0fe2",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/create-1.18.2-0.5.1.i.jar"
+    },
+    {
+      "name": "cupboard-1.18.2-1.5.jar",
+      "path": "cupboard-1.18.2-1.5.jar",
+      "sha256": "79c96aa5c5b33d6659a7a29f68c36ea7564f1dcc2817a9e198444ea506e23bf0",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/cupboard-1.18.2-1.5.jar"
+    },
+    {
+      "name": "curios-forge-1.18.2-5.0.9.2.jar",
+      "path": "curios-forge-1.18.2-5.0.9.2.jar",
+      "sha256": "327b6a611cdd10be9d789e082cb7c91ef8afa822dcb3daf112aee71012fdfd13",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/curios-forge-1.18.2-5.0.9.2.jar"
+    },
+    {
+      "name": "ftb-library-forge-1802.3.12-build.726.jar",
+      "path": "ftb-library-forge-1802.3.12-build.726.jar",
+      "sha256": "b2eb8b4740f779b7aef4491c1408c17e2d5b0d2d43379ee757948868f6c9c5e9",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/ftb-library-forge-1802.3.12-build.726.jar"
+    },
+    {
+      "name": "ftb-quests-forge-1802.3.16-build.479.jar",
+      "path": "ftb-quests-forge-1802.3.16-build.479.jar",
+      "sha256": "7622250c06c87d1abfa70dd869d15f03d109e3a07b0d0e69052e940853b35217",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/ftb-quests-forge-1802.3.16-build.479.jar"
+    },
+    {
+      "name": "ftb-teams-forge-1802.2.11-build.107.jar",
+      "path": "ftb-teams-forge-1802.2.11-build.107.jar",
+      "sha256": "e026cb1e2af513b590c2cf7fbacfe69f05a52e1c238eeb272e51b45bdccd143b",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/ftb-teams-forge-1802.2.11-build.107.jar"
+    },
+    {
+      "name": "geckolib-forge-1.18-3.0.57.jar",
+      "path": "geckolib-forge-1.18-3.0.57.jar",
+      "sha256": "b6d0954f7b777b43e72f202116c8ccbb1e37757a1142759303ab636a9077b8ba",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/geckolib-forge-1.18-3.0.57.jar"
+    },
+    {
+      "name": "ironchest-1.18.2-13.2.11.jar",
+      "path": "ironchest-1.18.2-13.2.11.jar",
+      "sha256": "e73328dd9cf6c28e3b63d260cfb1e4c62eb93a1e171c167ca50c2567e096a4d1",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/ironchest-1.18.2-13.2.11.jar"
+    },
+    {
+      "name": "item-filters-forge-1802.2.8-build.50.jar",
+      "path": "item-filters-forge-1802.2.8-build.50.jar",
+      "sha256": "61eb98855748e5f01706e838c72ba35f27077bdb0a48f6ea36c964dd2311ce36",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/item-filters-forge-1802.2.8-build.50.jar"
+    },
+    {
+      "name": "jei-1.18.2-forge-10.2.1.1005.jar",
+      "path": "jei-1.18.2-forge-10.2.1.1005.jar",
+      "sha256": "23ee55ca7bf378f9fb015ea0cd0388ee88a7ddaee809043a01da323caf3a34b8",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/jei-1.18.2-forge-10.2.1.1005.jar"
+    },
+    {
+      "name": "journeymap-1.18.2-5.9.8-forge.jar",
+      "path": "journeymap-1.18.2-5.9.8-forge.jar",
+      "sha256": "324540fc14b27dda87c004d815166fdfd5b7a1b0e8578fc7e878a4ee334f3fbb",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/journeymap-1.18.2-5.9.8-forge.jar"
+    },
+    {
+      "name": "konkrete_forge_1.8.0_MC_1.18-1.18.2.jar",
+      "path": "konkrete_forge_1.8.0_MC_1.18-1.18.2.jar",
+      "sha256": "f5ddb9c687890cf244e4a039a31fdf23d95eaadbc29a0a7bd1fd6a68af5a6d9d",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/konkrete_forge_1.8.0_MC_1.18-1.18.2.jar"
+    },
+    {
+      "name": "lootintegrations-1.18.2-4.7.jar",
+      "path": "lootintegrations-1.18.2-4.7.jar",
+      "sha256": "7608167a8ca9ce94e743564f9d8df8e33ec4e44abed80d1340ca57e7fb3c5f6c",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/lootintegrations-1.18.2-4.7.jar"
+    },
+    {
+      "name": "lootintegrations_yungs-1.6.jar",
+      "path": "lootintegrations_yungs-1.6.jar",
+      "sha256": "15e0b2b1a6e538e2e4f14c1fa9fd272e3ea45d74b0e95d50d3f707a7cef9b9be",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/lootintegrations_yungs-1.6.jar"
+    },
+    {
+      "name": "lootr-forge-1.18.2-0.3.30.74.jar",
+      "path": "lootr-forge-1.18.2-0.3.30.74.jar",
+      "sha256": "aa38cb961c3f57172a0b5630c23c4200c63ea9161e1c37780ad526c2caa1c4ef",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/lootr-forge-1.18.2-0.3.30.74.jar"
+    },
+    {
+      "name": "mcw-furniture-3.4.1-mc1.18.2forge.jar",
+      "path": "mcw-furniture-3.4.1-mc1.18.2forge.jar",
+      "sha256": "73b381b0429126dccebbcc6897c3601df36e04ffb8622165775c089476eb58ae",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/mcw-furniture-3.4.1-mc1.18.2forge.jar"
+    },
+    {
+      "name": "mcw-roofs-2.3.2-mc1.18.2forge.jar",
+      "path": "mcw-roofs-2.3.2-mc1.18.2forge.jar",
+      "sha256": "deba3388858ec28c2ddaee6c47c1453fd3ac32ef5b26a30c34fc560aaac539df",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/mcw-roofs-2.3.2-mc1.18.2forge.jar"
+    },
+    {
+      "name": "mcw-trapdoors-1.1.5-mc1.18.2forge.jar",
+      "path": "mcw-trapdoors-1.1.5-mc1.18.2forge.jar",
+      "sha256": "8169f2e8849f7bd28ffb7da622ef84a52415d5680034c572bd0d5673473d9250",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/mcw-trapdoors-1.1.5-mc1.18.2forge.jar"
+    },
+    {
+      "name": "modernfix-forge-5.18.0+mc1.18.2.jar",
+      "path": "modernfix-forge-5.18.0+mc1.18.2.jar",
+      "sha256": "6d0cde3d2d5ccbffb2697a3ddd7994f00f070419e4b69e7edff5468fa6b95ffd",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/modernfix-forge-5.18.0%2Bmc1.18.2.jar"
+    },
+    {
+      "name": "nfm-2022.10.27-1.18.2.jar",
+      "path": "nfm-2022.10.27-1.18.2.jar",
+      "sha256": "3d8c7f43d5a7b57a673396cadf9c11fb139a72f48787b3ed02c2bfe0f8506172",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/nfm-2022.10.27-1.18.2.jar"
+    },
+    {
+      "name": "nuclear_craft-1.18.2-0.10.1.jar",
+      "path": "nuclear_craft-1.18.2-0.10.1.jar",
+      "sha256": "0bb4d972bea8961c0b77fbea6c096c5b9fd90f54b16edca29b35c267a079a971",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/nuclear_craft-1.18.2-0.10.1.jar"
+    },
+    {
+      "name": "pamhc2crops-1.18.2-1.0.6.jar",
+      "path": "pamhc2crops-1.18.2-1.0.6.jar",
+      "sha256": "97c861254752b962a54e61baba194c96f413989c854a0453cd49ae2d72f3d90e",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/pamhc2crops-1.18.2-1.0.6.jar"
+    },
+    {
+      "name": "pamhc2foodcore-1.18.2-1.0.3.jar",
+      "path": "pamhc2foodcore-1.18.2-1.0.3.jar",
+      "sha256": "599318ae697e58d3b394c3b62680d49e8a4592621442c99fe1bf62420dc2d208",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/pamhc2foodcore-1.18.2-1.0.3.jar"
+    },
+    {
+      "name": "pamhc2foodextended-1.18.2-1.0.5.jar",
+      "path": "pamhc2foodextended-1.18.2-1.0.5.jar",
+      "sha256": "d6a900b2cb3da11aaf000566f909825c572025d783adf254d7bc76f463a0fcd2",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/pamhc2foodextended-1.18.2-1.0.5.jar"
+    },
+    {
+      "name": "pamhc2trees-1.18.2-1.0.4.jar",
+      "path": "pamhc2trees-1.18.2-1.0.4.jar",
+      "sha256": "fff1a686fc54db4d484d7bade427af47b75689458bf8a50e037df16d2b0ec9a3",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/pamhc2trees-1.18.2-1.0.4.jar"
+    },
+    {
+      "name": "polymorph-forge-1.18.2-0.50.jar",
+      "path": "polymorph-forge-1.18.2-0.50.jar",
+      "sha256": "9ae8862912415b4c35b0b37d71ae67acc56007fdb22024c08348d9a62ff4b903",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/polymorph-forge-1.18.2-0.50.jar"
+    },
+    {
+      "name": "selene-1.18.2-1.17.17.jar",
+      "path": "selene-1.18.2-1.17.17.jar",
+      "sha256": "b06590edf24f91d655bb59f585950c11ef8c72c798b7d40dc6a4c16fbf2603a3",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/selene-1.18.2-1.17.17.jar"
+    },
+    {
+      "name": "sophisticatedbackpacks-1.18.2-3.20.3.1063.jar",
+      "path": "sophisticatedbackpacks-1.18.2-3.20.3.1063.jar",
+      "sha256": "5b5b0c67f301b385e074ab6900930f4f6c3c3e0355c8611cd378bf27c023948d",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/sophisticatedbackpacks-1.18.2-3.20.3.1063.jar"
+    },
+    {
+      "name": "sophisticatedcore-1.18.2-0.6.4.604.jar",
+      "path": "sophisticatedcore-1.18.2-0.6.4.604.jar",
+      "sha256": "25a32678b13b06c1b1aa0ed9e9e244eb1b33d5095989758684e51dc014125627",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/sophisticatedcore-1.18.2-0.6.4.604.jar"
+    },
+    {
+      "name": "soundphysics-forge-1.18.2-1.0.6.jar",
+      "path": "soundphysics-forge-1.18.2-1.0.6.jar",
+      "sha256": "662237063838ec38d863b042121070525feb7897002d1e4cb74749761fe0898a",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/soundphysics-forge-1.18.2-1.0.6.jar"
+    },
+    {
+      "name": "spark-1.10.38-forge.jar",
+      "path": "spark-1.10.38-forge.jar",
+      "sha256": "9de840f1c5d4a31b04d43c99ba815d5c044940417c5575dcaec0451b7aa6089c",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/spark-1.10.38-forge.jar"
+    },
+    {
+      "name": "supermartijn642configlib-1.1.8-forge-mc1.18.jar",
+      "path": "supermartijn642configlib-1.1.8-forge-mc1.18.jar",
+      "sha256": "52f0dc54f277ce1153fe8512ed27256899927d01ff9b643e230df34735cc5ec7",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/supermartijn642configlib-1.1.8-forge-mc1.18.jar"
+    },
+    {
+      "name": "supermartijn642corelib-1.1.24a-forge-mc1.18.jar",
+      "path": "supermartijn642corelib-1.1.24a-forge-mc1.18.jar",
+      "sha256": "fbfba72eea26130cdee696cdbe371b7947ff991d895f5513e8d3d7af00596aba",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/supermartijn642corelib-1.1.24a-forge-mc1.18.jar"
+    },
+    {
+      "name": "supplementaries-1.18.2-1.5.18.jar",
+      "path": "supplementaries-1.18.2-1.5.18.jar",
+      "sha256": "2ab0363daed627b9c8df5908cf89f9b61000ece499a6b6016f63206da17df384",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/supplementaries-1.18.2-1.5.18.jar"
+    },
+    {
       "name": "survivalmoddedclient-1.0.0.jar",
       "path": "survivalmoddedclient-1.0.0.jar",
       "sha256": "d293252c5e9d0da3e2277cffe919ff2d86aafcb72400d93a4e374032e128e513",
       "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/survivalmoddedclient-1.0.0.jar"
+    },
+    {
+      "name": "torchmaster-18.2.1.jar",
+      "path": "torchmaster-18.2.1.jar",
+      "sha256": "0e04efdbf8431a221b1868a3a2dd3e09654c6c5eb87c1c62b6973fb475028d98",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/torchmaster-18.2.1.jar"
+    },
+    {
+      "name": "trashcans-1.1.0-forge-mc1.18.jar",
+      "path": "trashcans-1.1.0-forge-mc1.18.jar",
+      "sha256": "c5a644666dfa42f2e8d1095ea2824072b51b9a281010386f5db860eae0b7e25f",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/trashcans-1.1.0-forge-mc1.18.jar"
+    },
+    {
+      "name": "trashslot-forge-1.18.2-11.0.3.jar",
+      "path": "trashslot-forge-1.18.2-11.0.3.jar",
+      "sha256": "268a9ca16194bf8d3b3043b74ec420b14758e15ef6bc28f3dab58bd4d8f659e2",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/trashslot-forge-1.18.2-11.0.3.jar"
+    },
+    {
+      "name": "waystones-forge-1.18.2-10.2.2.jar",
+      "path": "waystones-forge-1.18.2-10.2.2.jar",
+      "sha256": "26d0e83ed96b6146ae3680132cb2ef77eeb7f70c0abe4172a66926dd01429fd4",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/waystones-forge-1.18.2-10.2.2.jar"
     }
   ],
   "config": [],
