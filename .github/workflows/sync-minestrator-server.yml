@@ -504,7 +504,7 @@ jobs:
               client.close()
 
       - name: Redémarrer le serveur
-        if: always() && steps.initial_state.outputs.online == 'true'
+        if: always()
         shell: python
         env:
           API_KEY: ${{ secrets.MINESTRATOR_API_KEY }}
