@@ -1,0 +1,550 @@
+name: Sync SurvivalModded server
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: survivalmodded-server-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Stop → Sync SFTP → Start
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      MINESTRATOR_SERVER_ID: "479751"
+      MINECRAFT_HOST: "209.222.101.116"
+      MINECRAFT_PORT: "22895"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Vérifier server-manifest.json
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          path = Path("server-manifest.json")
+
+          if not path.is_file():
+              raise SystemExit(
+                  "server-manifest.json est introuvable. "
+                  "Lance d'abord le workflow Generate server manifest."
+              )
+
+          manifest = json.loads(path.read_text(encoding="utf-8"))
+
+          for section in ("mods", "config", "defaultconfigs"):
+              if section not in manifest or not isinstance(manifest[section], list):
+                  raise SystemExit(
+                      f"Section invalide ou absente dans server-manifest.json : {section}"
+                  )
+
+          print("server-manifest.json : OK")
+          print(f"mods           : {len(manifest['mods'])}")
+          print(f"config         : {len(manifest['config'])}")
+          print(f"defaultconfigs : {len(manifest['defaultconfigs'])}")
+
+      - name: Vérifier les secrets
+        shell: bash
+        env:
+          API_KEY: ${{ secrets.MINESTRATOR_API_KEY }}
+          SFTP_HOST: ${{ secrets.MINESTRATOR_SFTP_HOST }}
+          SFTP_PORT: ${{ secrets.MINESTRATOR_SFTP_PORT }}
+          SFTP_USER: ${{ secrets.MINESTRATOR_SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.MINESTRATOR_SFTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          missing=0
+
+          for name in API_KEY SFTP_HOST SFTP_PORT SFTP_USER SFTP_PASSWORD; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Le secret correspondant à $name est vide ou absent."
+              missing=1
+            fi
+          done
+
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+          echo "Secrets MineStrator : OK"
+
+      - name: Installer Paramiko
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check --quiet paramiko
+
+      - name: Détecter l'état initial du serveur
+        id: initial_state
+        shell: python
+        run: |
+          import os
+          import socket
+
+          host = os.environ["MINECRAFT_HOST"]
+          port = int(os.environ["MINECRAFT_PORT"])
+
+          sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+          sock.settimeout(3)
+
+          try:
+              online = sock.connect_ex((host, port)) == 0
+          finally:
+              sock.close()
+
+          value = "true" if online else "false"
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"online={value}\n")
+
+          print(
+              "État initial : "
+              + ("serveur en ligne" if online else "serveur arrêté / port fermé")
+          )
+
+      - name: Arrêter proprement le serveur
+        if: steps.initial_state.outputs.online == 'true'
+        shell: python
+        env:
+          API_KEY: ${{ secrets.MINESTRATOR_API_KEY }}
+        run: |
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+
+          server_id = os.environ["MINESTRATOR_SERVER_ID"]
+          api_key = os.environ["API_KEY"]
+
+          data = json.dumps({
+              "poweraction": "stop10"
+          }).encode("utf-8")
+
+          request = urllib.request.Request(
+              f"https://mine.sttr.io/server/{server_id}/poweraction",
+              data=data,
+              headers={
+                  "Authorization": f"Bearer {api_key}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/json",
+                  "User-Agent": "SurvivalModded-GitHubActions/1.0",
+              },
+              method="PUT",
+          )
+
+          try:
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  response.read()
+          except urllib.error.HTTPError as error:
+              body = error.read().decode("utf-8", errors="replace")
+              raise SystemExit(
+                  f"Impossible d'arrêter le serveur : HTTP {error.code} — {body}"
+              )
+          except Exception as error:
+              raise SystemExit(
+                  f"Impossible de joindre l'API MineStrator : {error}"
+              )
+
+          print("Commande stop10 envoyée avec succès.")
+
+      - name: Attendre la fermeture du port Minecraft
+        if: steps.initial_state.outputs.online == 'true'
+        shell: python
+        run: |
+          import os
+          import socket
+          import time
+
+          host = os.environ["MINECRAFT_HOST"]
+          port = int(os.environ["MINECRAFT_PORT"])
+
+          deadline = time.time() + 75
+
+          while time.time() < deadline:
+              sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+              sock.settimeout(2)
+
+              try:
+                  result = sock.connect_ex((host, port))
+              finally:
+                  sock.close()
+
+              if result != 0:
+                  print("Serveur Minecraft arrêté : port fermé.")
+                  break
+
+              print("Le serveur est encore en ligne, attente...")
+              time.sleep(3)
+          else:
+              raise SystemExit(
+                  "Le port Minecraft est resté ouvert après 75 secondes. "
+                  "Synchronisation annulée pour éviter de modifier les fichiers "
+                  "pendant que le serveur tourne."
+              )
+
+      - name: Synchroniser mods, config et defaultconfigs
+        shell: python
+        env:
+          SFTP_HOST_RAW: ${{ secrets.MINESTRATOR_SFTP_HOST }}
+          SFTP_PORT_RAW: ${{ secrets.MINESTRATOR_SFTP_PORT }}
+          SFTP_USER: ${{ secrets.MINESTRATOR_SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.MINESTRATOR_SFTP_PASSWORD }}
+        run: |
+          import hashlib
+          import json
+          import os
+          import posixpath
+          import stat
+          from pathlib import Path, PurePosixPath
+          from urllib.parse import urlsplit
+
+          import paramiko
+
+          MANAGED_SECTIONS = ("mods", "config", "defaultconfigs")
+          MARKER_FILE = ".survivalmodded-server-manifest.json"
+
+          manifest = json.loads(
+              Path("server-manifest.json").read_text(encoding="utf-8")
+          )
+
+          raw_host = os.environ["SFTP_HOST_RAW"].strip()
+          raw_port = os.environ["SFTP_PORT_RAW"].strip()
+          username = os.environ["SFTP_USER"]
+          password = os.environ["SFTP_PASSWORD"]
+
+          candidate = raw_host
+          if "://" not in candidate:
+              candidate = "sftp://" + candidate
+
+          parsed = urlsplit(candidate)
+          host = parsed.hostname
+
+          if not host:
+              raise SystemExit("Hôte SFTP invalide.")
+
+          port = parsed.port if parsed.port is not None else int(raw_port)
+
+          def normalize_relative(value: str) -> str:
+              value = str(value).replace("\\", "/").strip().lstrip("/")
+              path = PurePosixPath(value)
+
+              if not value or value == ".":
+                  raise ValueError("Chemin distant vide.")
+
+              if ".." in path.parts:
+                  raise ValueError(
+                      f"Chemin refusé car il contient '..' : {value}"
+                  )
+
+              return path.as_posix()
+
+          def sha256_file(path: Path) -> str:
+              digest = hashlib.sha256()
+
+              with path.open("rb") as handle:
+                  for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                      digest.update(chunk)
+
+              return digest.hexdigest()
+
+          def remote_exists(sftp, remote_path: str) -> bool:
+              try:
+                  sftp.stat(remote_path)
+                  return True
+              except OSError:
+                  return False
+
+          def ensure_remote_dir(sftp, remote_dir: str):
+              if remote_dir in ("", "."):
+                  return
+
+              current = ""
+
+              for part in PurePosixPath(remote_dir).parts:
+                  current = (
+                      part
+                      if not current
+                      else posixpath.join(current, part)
+                  )
+
+                  try:
+                      attrs = sftp.stat(current)
+
+                      if not stat.S_ISDIR(attrs.st_mode):
+                          raise RuntimeError(
+                              f"{current} existe mais n'est pas un dossier."
+                          )
+
+                  except OSError:
+                      sftp.mkdir(current)
+
+          def load_previous_marker(sftp):
+              try:
+                  with sftp.open(MARKER_FILE, "r") as handle:
+                      raw = handle.read()
+
+                  if isinstance(raw, bytes):
+                      raw = raw.decode("utf-8")
+
+                  data = json.loads(raw)
+
+                  if not isinstance(data, dict):
+                      return {}
+
+                  return data
+
+              except Exception:
+                  return {}
+
+          def previous_managed_paths(previous):
+              result = {}
+
+              for section in MANAGED_SECTIONS:
+                  paths = set()
+
+                  for entry in previous.get(section, []):
+                      try:
+                          rel = normalize_relative(entry.get("path", ""))
+                      except Exception:
+                          continue
+
+                      paths.add(rel)
+
+                  result[section] = paths
+
+              return result
+
+          def previous_entries_by_path(previous):
+              result = {}
+
+              for section in MANAGED_SECTIONS:
+                  section_map = {}
+
+                  for entry in previous.get(section, []):
+                      try:
+                          rel = normalize_relative(entry.get("path", ""))
+                      except Exception:
+                          continue
+
+                      section_map[rel] = entry
+
+                  result[section] = section_map
+
+              return result
+
+          client = paramiko.SSHClient()
+          client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+          try:
+              client.connect(
+                  hostname=host,
+                  port=port,
+                  username=username,
+                  password=password,
+                  timeout=20,
+                  banner_timeout=20,
+                  auth_timeout=20,
+                  allow_agent=False,
+                  look_for_keys=False,
+              )
+
+              sftp = client.open_sftp()
+
+              try:
+                  previous = load_previous_marker(sftp)
+                  old_paths = previous_managed_paths(previous)
+                  old_entries = previous_entries_by_path(previous)
+
+                  new_paths = {}
+                  marker = {
+                      "version": 1,
+                      "source": "server-manifest.json",
+                  }
+
+                  uploaded = 0
+                  skipped = 0
+                  deleted = 0
+
+                  for section in MANAGED_SECTIONS:
+                      ensure_remote_dir(sftp, section)
+
+                      marker[section] = []
+                      new_paths[section] = set()
+
+                      for entry in manifest.get(section, []):
+                          rel = normalize_relative(entry.get("path", ""))
+                          expected_sha = str(entry.get("sha256", "")).lower()
+
+                          if len(expected_sha) != 64:
+                              raise RuntimeError(
+                                  f"SHA-256 invalide pour {section}/{rel}"
+                              )
+
+                          local_path = Path(section) / Path(*PurePosixPath(rel).parts)
+
+                          if not local_path.is_file():
+                              raise RuntimeError(
+                                  f"Fichier local introuvable : {local_path}"
+                              )
+
+                          actual_sha = sha256_file(local_path)
+
+                          if actual_sha != expected_sha:
+                              raise RuntimeError(
+                                  f"SHA-256 incorrect pour {local_path}"
+                              )
+
+                          remote_path = posixpath.join(section, rel)
+                          remote_parent = posixpath.dirname(remote_path)
+                          ensure_remote_dir(sftp, remote_parent)
+
+                          new_paths[section].add(rel)
+
+                          old_entry = old_entries.get(section, {}).get(rel, {})
+                          old_sha = str(old_entry.get("sha256", "")).lower()
+                          old_size = old_entry.get("size")
+
+                          should_upload = True
+
+                          if (
+                              old_sha == expected_sha
+                              and remote_exists(sftp, remote_path)
+                          ):
+                              try:
+                                  remote_size = sftp.stat(remote_path).st_size
+
+                                  if (
+                                      old_size == local_path.stat().st_size
+                                      and remote_size == local_path.stat().st_size
+                                  ):
+                                      should_upload = False
+                              except OSError:
+                                  should_upload = True
+
+                          if should_upload:
+                              print(f"[UPLOAD] {remote_path}")
+                              sftp.put(
+                                  str(local_path),
+                                  remote_path,
+                                  confirm=True,
+                              )
+                              uploaded += 1
+                          else:
+                              print(f"[OK]     {remote_path}")
+                              skipped += 1
+
+                          marker[section].append({
+                              "path": rel,
+                              "sha256": expected_sha,
+                              "size": local_path.stat().st_size,
+                          })
+
+                  # Sécurité :
+                  # on ne supprime QUE les fichiers enregistrés comme gérés
+                  # lors d'une précédente synchronisation.
+                  #
+                  # Ainsi, au premier lancement, aucun mod/fichier déjà présent
+                  # manuellement sur le serveur n'est supprimé.
+                  for section in MANAGED_SECTIONS:
+                      removed_from_manifest = (
+                          old_paths.get(section, set())
+                          - new_paths.get(section, set())
+                      )
+
+                      for rel in sorted(removed_from_manifest):
+                          remote_path = posixpath.join(section, rel)
+
+                          if remote_exists(sftp, remote_path):
+                              print(f"[DELETE] {remote_path}")
+                              sftp.remove(remote_path)
+                              deleted += 1
+
+                  marker_json = (
+                      json.dumps(
+                          marker,
+                          indent=2,
+                          ensure_ascii=False,
+                      )
+                      + "\n"
+                  )
+
+                  with sftp.open(MARKER_FILE, "w") as handle:
+                      handle.write(marker_json)
+
+                  print()
+                  print("==============================================")
+                  print(f" Uploads     : {uploaded}")
+                  print(f" Déjà à jour : {skipped}")
+                  print(f" Supprimés   : {deleted}")
+                  print("==============================================")
+                  print("Synchronisation SFTP terminée.")
+
+              finally:
+                  sftp.close()
+
+          finally:
+              client.close()
+
+      - name: Redémarrer le serveur
+        if: always() && steps.initial_state.outputs.online == 'true'
+        shell: python
+        env:
+          API_KEY: ${{ secrets.MINESTRATOR_API_KEY }}
+        run: |
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+
+          server_id = os.environ["MINESTRATOR_SERVER_ID"]
+          api_key = os.environ["API_KEY"]
+
+          data = json.dumps({
+              "poweraction": "start"
+          }).encode("utf-8")
+
+          request = urllib.request.Request(
+              f"https://mine.sttr.io/server/{server_id}/poweraction",
+              data=data,
+              headers={
+                  "Authorization": f"Bearer {api_key}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/json",
+                  "User-Agent": "SurvivalModded-GitHubActions/1.0",
+              },
+              method="PUT",
+          )
+
+          try:
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  response.read()
+          except urllib.error.HTTPError as error:
+              body = error.read().decode("utf-8", errors="replace")
+              raise SystemExit(
+                  f"Synchronisation terminée/échouée, mais le redémarrage "
+                  f"du serveur a échoué : HTTP {error.code} — {body}"
+              )
+          except Exception as error:
+              raise SystemExit(
+                  "Synchronisation terminée/échouée, mais impossible de "
+                  f"redémarrer le serveur : {error}"
+              )
+
+          print("Commande de démarrage envoyée avec succès.")
+
+      - name: Résumé
+        if: always()
+        shell: bash
+        run: |
+          echo "Serveur MineStrator : 479751"
+          echo "Synchronisation gérée : mods / config / defaultconfigs"
+          echo "resourcepacks et shaderpacks ne sont pas envoyés au serveur."
