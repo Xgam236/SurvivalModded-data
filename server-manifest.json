@@ -435,12 +435,6 @@
       "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/mcw-trapdoors-1.1.5-mc1.18.2forge.jar"
     },
     {
-      "name": "modernfix-forge-5.18.0+mc1.18.2.jar",
-      "path": "modernfix-forge-5.18.0+mc1.18.2.jar",
-      "sha256": "6d0cde3d2d5ccbffb2697a3ddd7994f00f070419e4b69e7edff5468fa6b95ffd",
-      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/modernfix-forge-5.18.0%2Bmc1.18.2.jar"
-    },
-    {
       "name": "nfm-2022.10.27-1.18.2.jar",
       "path": "nfm-2022.10.27-1.18.2.jar",
       "sha256": "3d8c7f43d5a7b57a673396cadf9c11fb139a72f48787b3ed02c2bfe0f8506172",
