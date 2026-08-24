@@ -1,4 +1,4 @@
-name: Generate server manifest
+name: Generate mod manifest
 
 on:
   workflow_dispatch:
@@ -6,9 +6,12 @@ on:
     branches:
       - main
     paths:
-      - "manifest.json"
-      - "server-ignore.txt"
-      - ".github/workflows/generate-server-manifest.yml"
+      - "mods/**"
+      - "config/**"
+      - "defaultconfigs/**"
+      - "resourcepacks/**"
+      - "shaderpacks/**"
+      - ".github/workflows/generate-mod-manifest.yml"
 
 permissions:
   contents: write
@@ -23,85 +26,86 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate server-manifest.json
+      - name: Generate manifest.json
         shell: python
         run: |
+          import hashlib
           import json
           from pathlib import Path
+          from urllib.parse import quote
 
-          root = Path(".")
-          manifest_path = root / "manifest.json"
-          ignore_path = root / "server-ignore.txt"
-          output_path = root / "server-manifest.json"
-
-          if not manifest_path.is_file():
-              raise SystemExit("manifest.json est introuvable.")
-
-          manifest = json.loads(
-              manifest_path.read_text(encoding="utf-8")
+          ROOT = Path(".")
+          REPO = "Xgam236/SurvivalModded-data"
+          BRANCH = "main"
+          SECTIONS = (
+              "mods",
+              "config",
+              "defaultconfigs",
+              "resourcepacks",
+              "shaderpacks",
           )
 
-          ignored_mods = set()
-
-          if ignore_path.is_file():
-              for raw_line in ignore_path.read_text(encoding="utf-8").splitlines():
-                  line = raw_line.strip()
-
-                  if not line or line.startswith("#"):
-                      continue
-
-                  ignored_mods.add(
-                      line.replace("\\", "/").lstrip("/")
-                  )
-
-          server_mods = []
-
-          for entry in manifest.get("mods", []):
-              relative_path = str(entry.get("path", "")).replace("\\", "/").lstrip("/")
-
-              if not relative_path:
-                  continue
-
-              if relative_path in ignored_mods:
-                  print(f"[EXCLU SERVEUR] mods/{relative_path}")
-                  continue
-
-              server_mods.append(entry)
+          def sha256(path: Path) -> str:
+              h = hashlib.sha256()
+              with path.open("rb") as f:
+                  for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                      h.update(chunk)
+              return h.hexdigest()
 
           result = {
-              "version": 1,
-              "sourceManifest": "manifest.json",
-              "mods": server_mods,
-              "config": manifest.get("config", []),
-              "defaultconfigs": manifest.get("defaultconfigs", [])
+              "version": 2,
+              "mods": [],
+              "config": [],
+              "defaultconfigs": [],
+              "resourcepacks": [],
+              "shaderpacks": [],
           }
 
-          output_path.write_text(
+          for section in SECTIONS:
+              folder = ROOT / section
+
+              if not folder.is_dir():
+                  continue
+
+              for file in sorted(folder.rglob("*")):
+                  if not file.is_file() or file.name == ".gitkeep":
+                      continue
+
+                  relative = file.relative_to(folder).as_posix()
+                  raw_path = quote(f"{section}/{relative}", safe="/")
+
+                  result[section].append({
+                      "name": file.name,
+                      "path": relative,
+                      "sha256": sha256(file),
+                      "url": (
+                          f"https://raw.githubusercontent.com/"
+                          f"{REPO}/{BRANCH}/{raw_path}"
+                      ),
+                  })
+
+          Path("manifest.json").write_text(
               json.dumps(result, indent=2, ensure_ascii=False) + "\n",
-              encoding="utf-8"
+              encoding="utf-8",
           )
 
-          print()
-          print("server-manifest.json généré :")
-          print(f"  mods           : {len(result['mods'])}")
-          print(f"  config         : {len(result['config'])}")
-          print(f"  defaultconfigs : {len(result['defaultconfigs'])}")
-          print()
-          print("resourcepacks et shaderpacks sont volontairement exclus du serveur.")
+          print("manifest.json généré :")
+          for section in SECTIONS:
+              print(f"  {section:14} : {len(result[section])}")
 
-      - name: Commit server manifest
+      - name: Commit manifest.json
         shell: bash
         run: |
           set -euo pipefail
 
-          if git diff --quiet -- server-manifest.json; then
-            echo "Aucune modification de server-manifest.json."
+          if git diff --quiet -- manifest.json; then
+            echo "Aucune modification de manifest.json."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add server-manifest.json
-          git commit -m "Update server manifest"
+          git add manifest.json
+          git commit -m "Update manifest"
           git push
