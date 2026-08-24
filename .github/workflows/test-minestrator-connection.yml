@@ -69,7 +69,6 @@ jobs:
               with urllib.request.urlopen(request, timeout=15) as response:
                   payload = json.loads(response.read().decode("utf-8"))
           except urllib.error.HTTPError as error:
-              body = error.read().decode("utf-8", errors="replace")
               raise SystemExit(
                   f"API MineStrator refusée : HTTP {error.code}. "
                   f"Vérifie MINESTRATOR_API_KEY et l'accès au serveur {server_id}."
@@ -77,23 +76,16 @@ jobs:
           except Exception as error:
               raise SystemExit(f"Impossible de joindre l'API MineStrator : {error}")
 
-          server = (
-              payload
-              .get("api", {})
-              .get("data", {})
-              .get("server", {})
-          )
-
+          server = payload.get("api", {}).get("data", {}).get("server", {})
           returned_id = str(server.get("id", ""))
 
           if returned_id != server_id:
               raise SystemExit(
-                  "L'API a répondu, mais l'ID de serveur retourné ne correspond pas "
-                  f"à {server_id}."
+                  "L'API a répondu, mais l'ID de serveur retourné "
+                  f"ne correspond pas à {server_id}."
               )
 
-          server_name = server.get("name") or "sans nom"
-          print(f"API MineStrator : OK — serveur {server_id} ({server_name})")
+          print(f"API MineStrator : OK — serveur {server_id}")
 
       - name: Installer Paramiko
         shell: bash
@@ -103,19 +95,84 @@ jobs:
       - name: Tester la connexion SFTP
         shell: python
         env:
-          SFTP_HOST: ${{ secrets.MINESTRATOR_SFTP_HOST }}
-          SFTP_PORT: ${{ secrets.MINESTRATOR_SFTP_PORT }}
+          SFTP_HOST_RAW: ${{ secrets.MINESTRATOR_SFTP_HOST }}
+          SFTP_PORT_RAW: ${{ secrets.MINESTRATOR_SFTP_PORT }}
           SFTP_USER: ${{ secrets.MINESTRATOR_SFTP_USER }}
           SFTP_PASSWORD: ${{ secrets.MINESTRATOR_SFTP_PASSWORD }}
         run: |
+          import ipaddress
           import os
           import socket
+          from urllib.parse import urlsplit
+
           import paramiko
 
-          host = os.environ["SFTP_HOST"].strip()
-          port = int(os.environ["SFTP_PORT"].strip())
+          raw_host = os.environ["SFTP_HOST_RAW"].strip()
+          raw_port = os.environ["SFTP_PORT_RAW"].strip()
           username = os.environ["SFTP_USER"]
           password = os.environ["SFTP_PASSWORD"]
+
+          # Accepte les formats :
+          #   1.2.3.4
+          #   1.2.3.4:2022
+          #   sftp://1.2.3.4:2022
+          #   sftp://user@1.2.3.4:2022/
+          candidate = raw_host
+          if "://" not in candidate:
+              candidate = "sftp://" + candidate
+
+          parsed = urlsplit(candidate)
+          host = parsed.hostname
+
+          if not host:
+              raise SystemExit(
+                  "MINESTRATOR_SFTP_HOST n'a pas pu être interprété. "
+                  "Copie l'IP SFTP depuis MineStrator > Accès."
+              )
+
+          # Si le port a été inclus dans MINESTRATOR_SFTP_HOST,
+          # on l'accepte. Sinon on utilise MINESTRATOR_SFTP_PORT.
+          embedded_port = parsed.port
+
+          try:
+              port = embedded_port if embedded_port is not None else int(raw_port)
+          except ValueError:
+              raise SystemExit(
+                  "Le port SFTP n'est pas numérique. "
+                  "MINESTRATOR_SFTP_PORT doit contenir uniquement le nombre du port."
+              )
+
+          # Diagnostic sans afficher le secret.
+          try:
+              ipaddress.ip_address(host)
+              host_kind = "adresse IP"
+          except ValueError:
+              host_kind = "nom DNS"
+
+          print(f"Format SFTP interprété : {host_kind}")
+          print(f"Port SFTP utilisé : {port}")
+
+          # Test DNS / résolution avant même Paramiko.
+          try:
+              resolved = socket.getaddrinfo(
+                  host,
+                  port,
+                  type=socket.SOCK_STREAM,
+              )
+          except socket.gaierror as error:
+              raise SystemExit(
+                  "L'hôte SFTP reste impossible à résoudre. "
+                  "Le secret MINESTRATOR_SFTP_HOST ne contient donc pas "
+                  "l'IP SFTP correcte affichée dans MineStrator > Accès. "
+                  f"Détail système : {error}"
+              )
+
+          if not resolved:
+              raise SystemExit(
+                  "L'hôte SFTP n'a retourné aucune adresse réseau."
+              )
+
+          print("Résolution de l'hôte SFTP : OK")
 
           client = paramiko.SSHClient()
           client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -138,15 +195,21 @@ jobs:
               try:
                   remote_path = sftp.getcwd() or "."
                   sftp.listdir(remote_path)
-                  print("SFTP MineStrator : OK")
+
+                  print("Connexion SFTP MineStrator : OK")
                   print(f"Dossier distant accessible : {remote_path}")
               finally:
                   sftp.close()
 
-          except (paramiko.SSHException, socket.error, OSError, ValueError) as error:
+          except paramiko.AuthenticationException:
               raise SystemExit(
-                  "Connexion SFTP impossible. Vérifie les 4 secrets SFTP "
-                  f"(hôte, port, utilisateur, mot de passe). Détail : {error}"
+                  "Le serveur SFTP est joignable, mais l'authentification a été refusée. "
+                  "Vérifie MINESTRATOR_SFTP_USER et MINESTRATOR_SFTP_PASSWORD."
+              )
+          except (paramiko.SSHException, socket.error, OSError) as error:
+              raise SystemExit(
+                  "Le serveur SFTP a été trouvé, mais la connexion SSH/SFTP a échoué. "
+                  f"Détail : {error}"
               )
           finally:
               client.close()
