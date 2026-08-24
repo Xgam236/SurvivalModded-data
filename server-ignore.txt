@@ -1,7 +1,28 @@
-# Un fichier par ligne, relatif au dossier mods/
-# Ces mods restent téléchargés par le launcher, mais ne seront jamais envoyés au serveur.
-#
-# Les lignes vides et celles commençant par # sont ignorées.
+# SurvivalModded — mods à ne PAS envoyer au serveur
+# Ces fichiers restent dans le dossier mods/ GitHub pour être téléchargés par le launcher.
+# Un nom de fichier exact par ligne.
+# Classification effectuée à partir des métadonnées des JAR et de la compatibilité client/serveur.
 
-survivalmoddedclient-1.0.0.jar
+BetterAdvancements-1.18.2-0.2.0.146.jar
+BetterF3-3.0.0-Forge-1.18.2.jar
+BetterThirdPerson-Forge-1.18.2-1.9.0.jar
 biomemusic-1.18.2-1.7.jar
+chat_heads-0.6.1-forge-1.18.2.jar
+Controlling-forge-1.18.2-9.0+23.jar
+CTM-1.18.2-1.1.5+5.jar
+EnchantmentDescriptions-Forge-1.18.2-10.0.12.jar
+entityculling-forge-1.6.1-mc1.18.2.jar
+entity_model_features_forge_1.18.2-2.0.2.jar
+entity_texture_features_forge_1.18.2-6.0.1.jar
+Essential_1-4-1-1_forge_1-18-2.jar
+inventoryhud.forge.1.18.2-3.4.26.jar
+iris_shader_folder-1.4.1-forge.jar
+jmi-forge-1.18.2-0.13-43.jar
+JustEnoughMekanismMultiblocks-1.18.2-2.15.jar
+JustEnoughResources-1.18.2-0.14.1.171.jar
+MouseTweaks-forge-mc1.18-2.21.jar
+oculus-mc1.18.2-1.6.4.jar
+rubidium-0.5.6.jar
+Searchables-forge-1.18.2-1.0.1.jar
+skinlayers3d-forge-1.11.2-mc1.18.2.jar
+survivalmoddedclient-1.0.0.jar
