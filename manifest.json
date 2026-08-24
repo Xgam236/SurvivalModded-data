@@ -14,7 +14,14 @@
       "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/survivalmoddedclient-1.0.0.jar"
     }
   ],
-  "config": [],
+  "config": [
+    {
+      "name": "test-config.toml",
+      "path": "config/test-config.toml",
+      "sha256": "87e739b7069219b7d9f5badf8a17c14ad2272278560dc0cd2ca89f65d6382521",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/config/config/test-config.toml"
+    }
+  ],
   "defaultconfigs": [],
   "resourcepacks": [],
   "shaderpacks": []
