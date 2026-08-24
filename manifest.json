@@ -5,6 +5,11 @@
       "name": "biomemusic-1.18.2-1.7.jar",
       "sha256": "56edf41de373205da00f576b4cbc1d1548b3061dcc7eaa8b713cf72f55926a60",
       "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/biomemusic-1.18.2-1.7.jar"
+    },
+    {
+      "name": "survivalmoddedclient-1.0.0.jar",
+      "sha256": "d293252c5e9d0da3e2277cffe919ff2d86aafcb72400d93a4e374032e128e513",
+      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/survivalmoddedclient-1.0.0.jar"
     }
   ]
 }
