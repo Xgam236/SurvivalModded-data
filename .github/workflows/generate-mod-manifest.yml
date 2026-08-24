@@ -1,216 +1,107 @@
-name: Generate Modpack Manifest
+name: Generate server manifest
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - "mods/**"
-      - "config/**"
-      - "defaultconfigs/**"
-      - "resourcepacks/**"
-      - "shaderpacks/**"
-      - ".github/workflows/generate-mod-manifest.yml"
-
-  workflow_dispatch:
+      - "manifest.json"
+      - "server-ignore.txt"
+      - ".github/workflows/generate-server-manifest.yml"
 
 permissions:
   contents: write
 
 jobs:
-  generate-manifest:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Generate manifest.json
-        shell: bash
+      - name: Generate server-manifest.json
+        shell: python
         run: |
-          python3 <<'PY'
-          import os
           import json
-          import hashlib
-          import urllib.parse
+          from pathlib import Path
 
-          OUTPUT_FILE = "manifest.json"
+          root = Path(".")
+          manifest_path = root / "manifest.json"
+          ignore_path = root / "server-ignore.txt"
+          output_path = root / "server-manifest.json"
 
-          REPOSITORY = os.environ["GITHUB_REPOSITORY"]
-          BRANCH = "main"
+          if not manifest_path.is_file():
+              raise SystemExit("manifest.json est introuvable.")
 
-          FOLDERS = {
-              "mods": {
-                  "extensions": [".jar"]
-              },
-              "config": {
-                  "extensions": None
-              },
-              "defaultconfigs": {
-                  "extensions": None
-              },
-              "resourcepacks": {
-                  "extensions": None
-              },
-              "shaderpacks": {
-                  "extensions": None
-              }
-          }
-
-
-          def calculate_sha256(filepath):
-              sha256 = hashlib.sha256()
-
-              with open(filepath, "rb") as f:
-                  while True:
-                      chunk = f.read(1024 * 1024)
-
-                      if not chunk:
-                          break
-
-                      sha256.update(chunk)
-
-              return sha256.hexdigest()
-
-
-          def build_download_url(relative_path):
-              relative_path = relative_path.replace("\\", "/")
-
-              parts = relative_path.split("/")
-
-              encoded_path = "/".join(
-                  urllib.parse.quote(part)
-                  for part in parts
-              )
-
-              return (
-                  f"https://raw.githubusercontent.com/"
-                  f"{REPOSITORY}/{BRANCH}/{encoded_path}"
-              )
-
-
-          def scan_folder(folder_name, extensions=None):
-              files = []
-
-              if not os.path.isdir(folder_name):
-                  print(f"Dossier absent : {folder_name}")
-                  return files
-
-              for root, dirs, filenames in os.walk(folder_name):
-                  dirs.sort()
-                  filenames.sort()
-
-                  for filename in filenames:
-
-                      if filename == ".gitkeep":
-                          continue
-
-                      if extensions is not None:
-                          if not any(
-                              filename.lower().endswith(ext.lower())
-                              for ext in extensions
-                          ):
-                              continue
-
-                      filepath = os.path.join(
-                          root,
-                          filename
-                      )
-
-                      relative_from_repo = filepath.replace(
-                          "\\",
-                          "/"
-                      )
-
-                      relative_inside_folder = os.path.relpath(
-                          filepath,
-                          folder_name
-                      ).replace(
-                          "\\",
-                          "/"
-                      )
-
-                      sha256 = calculate_sha256(
-                          filepath
-                      )
-
-                      url = build_download_url(
-                          relative_from_repo
-                      )
-
-                      files.append({
-                          "name": filename,
-                          "path": relative_inside_folder,
-                          "sha256": sha256,
-                          "url": url
-                      })
-
-              files.sort(
-                  key=lambda entry:
-                      entry["path"].lower()
-              )
-
-              return files
-
-
-          manifest = {
-              "version": 2
-          }
-
-          total_files = 0
-
-
-          for folder_name, folder_config in FOLDERS.items():
-
-              files = scan_folder(
-                  folder_name,
-                  folder_config["extensions"]
-              )
-
-              manifest[folder_name] = files
-
-              total_files += len(files)
-
-              print(
-                  f"{folder_name}: "
-                  f"{len(files)} fichier(s)"
-              )
-
-
-          with open(
-              OUTPUT_FILE,
-              "w",
-              encoding="utf-8"
-          ) as f:
-
-              json.dump(
-                  manifest,
-                  f,
-                  indent=2,
-                  ensure_ascii=False
-              )
-
-
-          print()
-          print(
-              f"Manifest généré avec succès : "
-              f"{total_files} fichier(s)"
+          manifest = json.loads(
+              manifest_path.read_text(encoding="utf-8")
           )
 
-          PY
+          ignored_mods = set()
 
-      - name: Commit manifest.json
+          if ignore_path.is_file():
+              for raw_line in ignore_path.read_text(encoding="utf-8").splitlines():
+                  line = raw_line.strip()
+
+                  if not line or line.startswith("#"):
+                      continue
+
+                  ignored_mods.add(
+                      line.replace("\\", "/").lstrip("/")
+                  )
+
+          server_mods = []
+
+          for entry in manifest.get("mods", []):
+              relative_path = str(entry.get("path", "")).replace("\\", "/").lstrip("/")
+
+              if not relative_path:
+                  continue
+
+              if relative_path in ignored_mods:
+                  print(f"[EXCLU SERVEUR] mods/{relative_path}")
+                  continue
+
+              server_mods.append(entry)
+
+          result = {
+              "version": 1,
+              "sourceManifest": "manifest.json",
+              "mods": server_mods,
+              "config": manifest.get("config", []),
+              "defaultconfigs": manifest.get("defaultconfigs", [])
+          }
+
+          output_path.write_text(
+              json.dumps(result, indent=2, ensure_ascii=False) + "\n",
+              encoding="utf-8"
+          )
+
+          print()
+          print("server-manifest.json généré :")
+          print(f"  mods           : {len(result['mods'])}")
+          print(f"  config         : {len(result['config'])}")
+          print(f"  defaultconfigs : {len(result['defaultconfigs'])}")
+          print()
+          print("resourcepacks et shaderpacks sont volontairement exclus du serveur.")
+
+      - name: Commit server manifest
         shell: bash
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          set -euo pipefail
 
-          git add manifest.json
-
-          if git diff --cached --quiet; then
-            echo "Manifest déjà à jour."
+          if git diff --quiet -- server-manifest.json; then
+            echo "Aucune modification de server-manifest.json."
             exit 0
           fi
 
-          git commit -m "Update modpack manifest"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add server-manifest.json
+          git commit -m "Update server manifest"
           git push
