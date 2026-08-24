@@ -1,0 +1,162 @@
+name: Test MineStrator connection
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-minestrator:
+    name: Test API + SFTP
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    env:
+      MINESTRATOR_SERVER_ID: "479751"
+
+    steps:
+      - name: Vérifier les secrets requis
+        shell: bash
+        env:
+          API_KEY: ${{ secrets.MINESTRATOR_API_KEY }}
+          SFTP_HOST: ${{ secrets.MINESTRATOR_SFTP_HOST }}
+          SFTP_PORT: ${{ secrets.MINESTRATOR_SFTP_PORT }}
+          SFTP_USER: ${{ secrets.MINESTRATOR_SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.MINESTRATOR_SFTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          missing=0
+
+          for name in API_KEY SFTP_HOST SFTP_PORT SFTP_USER SFTP_PASSWORD; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Le secret correspondant à $name est vide ou absent."
+              missing=1
+            fi
+          done
+
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+          echo "Tous les secrets MineStrator requis sont présents."
+
+      - name: Tester l'API MineStrator
+        shell: python
+        env:
+          API_KEY: ${{ secrets.MINESTRATOR_API_KEY }}
+        run: |
+          import json
+          import os
+          import urllib.request
+          import urllib.error
+
+          server_id = os.environ["MINESTRATOR_SERVER_ID"]
+          api_key = os.environ["API_KEY"]
+
+          request = urllib.request.Request(
+              f"https://mine.sttr.io/server/{server_id}",
+              headers={
+                  "Authorization": f"Bearer {api_key}",
+                  "Accept": "application/json",
+                  "User-Agent": "SurvivalModded-GitHubActions/1.0",
+              },
+              method="GET",
+          )
+
+          try:
+              with urllib.request.urlopen(request, timeout=15) as response:
+                  payload = json.loads(response.read().decode("utf-8"))
+          except urllib.error.HTTPError as error:
+              body = error.read().decode("utf-8", errors="replace")
+              raise SystemExit(
+                  f"API MineStrator refusée : HTTP {error.code}. "
+                  f"Vérifie MINESTRATOR_API_KEY et l'accès au serveur {server_id}."
+              )
+          except Exception as error:
+              raise SystemExit(f"Impossible de joindre l'API MineStrator : {error}")
+
+          server = (
+              payload
+              .get("api", {})
+              .get("data", {})
+              .get("server", {})
+          )
+
+          returned_id = str(server.get("id", ""))
+
+          if returned_id != server_id:
+              raise SystemExit(
+                  "L'API a répondu, mais l'ID de serveur retourné ne correspond pas "
+                  f"à {server_id}."
+              )
+
+          server_name = server.get("name") or "sans nom"
+          print(f"API MineStrator : OK — serveur {server_id} ({server_name})")
+
+      - name: Installer Paramiko
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check --quiet paramiko
+
+      - name: Tester la connexion SFTP
+        shell: python
+        env:
+          SFTP_HOST: ${{ secrets.MINESTRATOR_SFTP_HOST }}
+          SFTP_PORT: ${{ secrets.MINESTRATOR_SFTP_PORT }}
+          SFTP_USER: ${{ secrets.MINESTRATOR_SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.MINESTRATOR_SFTP_PASSWORD }}
+        run: |
+          import os
+          import socket
+          import paramiko
+
+          host = os.environ["SFTP_HOST"].strip()
+          port = int(os.environ["SFTP_PORT"].strip())
+          username = os.environ["SFTP_USER"]
+          password = os.environ["SFTP_PASSWORD"]
+
+          client = paramiko.SSHClient()
+          client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+          try:
+              client.connect(
+                  hostname=host,
+                  port=port,
+                  username=username,
+                  password=password,
+                  timeout=15,
+                  banner_timeout=15,
+                  auth_timeout=15,
+                  allow_agent=False,
+                  look_for_keys=False,
+              )
+
+              sftp = client.open_sftp()
+
+              try:
+                  remote_path = sftp.getcwd() or "."
+                  sftp.listdir(remote_path)
+                  print("SFTP MineStrator : OK")
+                  print(f"Dossier distant accessible : {remote_path}")
+              finally:
+                  sftp.close()
+
+          except (paramiko.SSHException, socket.error, OSError, ValueError) as error:
+              raise SystemExit(
+                  "Connexion SFTP impossible. Vérifie les 4 secrets SFTP "
+                  f"(hôte, port, utilisateur, mot de passe). Détail : {error}"
+              )
+          finally:
+              client.close()
+
+      - name: Résultat
+        shell: bash
+        run: |
+          echo "=============================================="
+          echo " MineStrator API : OK"
+          echo " MineStrator SFTP: OK"
+          echo " Serveur         : 479751"
+          echo "=============================================="
+          echo "Aucun fichier n'a été modifié sur le serveur."
