@@ -1,0 +1,7 @@
+# Un fichier par ligne, relatif au dossier mods/
+# Ces mods restent téléchargés par le launcher, mais ne seront jamais envoyés au serveur.
+#
+# Les lignes vides et celles commençant par # sont ignorées.
+
+survivalmoddedclient-1.0.0.jar
+biomemusic-1.18.2-1.7.jar
