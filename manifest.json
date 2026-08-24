@@ -2,12 +2,6 @@
   "version": 2,
   "mods": [
     {
-      "name": "Aquaculture-1.18.2-2.3.12.jar",
-      "path": "Aquaculture-1.18.2-2.3.12.jar",
-      "sha256": "b40aa5ad7895b9d463f6dbad0980f7b0c0ecc51fb25bcfca456a35353feb4e21",
-      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/mods/Aquaculture-1.18.2-2.3.12.jar"
-    },
-    {
       "name": "AutoRegLib-1.7-53.jar",
       "path": "AutoRegLib-1.7-53.jar",
       "sha256": "41ece668218c074bf2f30be5883cd90ad1a48dad6537a7fefca720230f688140",
