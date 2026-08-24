@@ -38,12 +38,5 @@
       "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/resourcepacks/test-config.toml"
     }
   ],
-  "shaderpacks": [
-    {
-      "name": "test-config.toml",
-      "path": "shaderpacks/test-config.toml",
-      "sha256": "190d957aa71204dd459a13db7a7b3226bb11a6220f172e75cc28e83c82266ba3",
-      "url": "https://raw.githubusercontent.com/Xgam236/SurvivalModded-data/main/shaderpacks/shaderpacks/test-config.toml"
-    }
-  ]
+  "shaderpacks": []
 }
