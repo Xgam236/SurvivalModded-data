@@ -2,7 +2,7 @@
   "version": 1,
   "news": [
     {
-      "title": "Bienvenue sur SurvivalModded",
+      "title": "Bienvenue sur le Launcher",
       "date": "23/08/2026",
       "text": "Le launcher synchronise désormais automatiquement les mods, configs, resource packs et shaders depuis GitHub."
     },
